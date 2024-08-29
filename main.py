@@ -67,6 +67,7 @@ class Scheduler:
 def parse_scheduler_file(file_path: str) -> Scheduler:
     """
     Parses a file to create a Scheduler object with its processes.
+    Reports an error if a quantum is provided for a non-round-robin algorithm.
 
     :param file_path: Path to the input file.
     :return: A Scheduler object populated with data from the file.
@@ -96,6 +97,9 @@ def parse_scheduler_file(file_path: str) -> Scheduler:
                 processes.append(Process(name=name, arrival=arrival, burst=burst))
             elif line.startswith('end'):
                 end = 'EOF'
+                # Validation: Check if quantum is provided for a non-round-robin algorithm
+                if use != 'rr' and quantum is not None:
+                    raise ValueError("Quantum should only be provided for round-robin ('rr') scheduling algorithm.")
                 # Create the Scheduler object when "end" is encountered
                 scheduler = Scheduler(processcount=processcount, runfor=runfor, use=use, quantum=quantum)
                 # Add all the processes to the Scheduler

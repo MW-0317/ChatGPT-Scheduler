@@ -73,6 +73,7 @@ def parse_scheduler_file(file_path: str) -> Scheduler:
     """
     scheduler = None
     processes = []
+    quantum = None
 
     with open(file_path, 'r') as file:
         for line in file:
@@ -83,6 +84,8 @@ def parse_scheduler_file(file_path: str) -> Scheduler:
                 runfor = int(line.split()[1])
             elif line.startswith('use'):
                 use = line.split()[1]
+            elif line.startswith('quantum'):
+                quantum = int(line.split()[1])
             elif line.startswith('process name'):
                 # Extract process details
                 parts = line.split()
@@ -94,7 +97,7 @@ def parse_scheduler_file(file_path: str) -> Scheduler:
             elif line.startswith('end'):
                 end = 'EOF'
                 # Create the Scheduler object when "end" is encountered
-                scheduler = Scheduler(processcount=processcount, runfor=runfor, use=use)
+                scheduler = Scheduler(processcount=processcount, runfor=runfor, use=use, quantum=quantum)
                 # Add all the processes to the Scheduler
                 for process in processes:
                     scheduler.add_process(process)

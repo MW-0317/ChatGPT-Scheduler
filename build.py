@@ -91,4 +91,4 @@ def concatenate_scripts(output_file):
     print(f"Done. All Python scripts have been concatenated into {output_file}.")
 
 if __name__ == "__main__":
-    concatenate_scripts('scheduler-get.py')
+    concatenate_scripts('scheduler-gpt.py')

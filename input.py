@@ -28,7 +28,7 @@ class Scheduler:
 
         :param processcount: Number of processes in the list.
         :param runfor: Total number of time ticks to run.
-        :param use: Scheduling algorithm to use ('fcfs', 'sjf', 'rr').
+        :param use: Scheduling algorithm to use ('fcfs', 'sjf', 'rr', 'lottery').
         :param quantum: Time quantum for round-robin scheduling (required if 'use' is 'rr').
         :param end: End-of-file marker.
         """
@@ -40,8 +40,8 @@ class Scheduler:
         self.end = end
 
         # Validation for the algorithm type and quantum requirement
-        if self.use not in ['fcfs', 'sjf', 'rr']:
-            raise ValueError("Invalid algorithm specified. Valid values: 'fcfs', 'sjf', 'rr'")
+        if self.use not in ['fcfs', 'sjf', 'rr', 'lottery']:
+            raise ValueError("Invalid algorithm specified. Valid values: 'fcfs', 'sjf', 'rr', 'lottery'")
 
         if self.use == 'rr' and self.quantum is None:
             raise ValueError("Error: Missing quantum parameter when use is 'rr'")

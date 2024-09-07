@@ -1,40 +1,45 @@
-def print_formatted_output(data):
-    lines = data.strip().split('\n')
-    
-    # Extract basic information
-    num_processes = lines[0].split()[0] + " processes"
-    scheduling_method = lines[1]
-    quantum_info = lines[2]
-    
-    # Print header information
-    print(f"{'=' * 40}")
-    print(f"{'Scheduling Report':^40}")
-    print(f"{'=' * 40}\n")
-    print(f"Processes: {num_processes}")
-    print(f"Scheduling Method: {scheduling_method}")
-    print(f"{quantum_info}\n")
-    
-    # Separate the process and time-related information
-    print(f"{'Time Log':^40}")
-    print(f"{'-' * 40}")
-    
-    time_logs = [line for line in lines[3:] if line.startswith("Time")]
-    for log in time_logs:
-        print(f"{log}")
-    
-    print(f"{'-' * 40}\n")
-    
-    # Separate finished information
-    finished_line = next(line for line in lines if line.startswith("Finished"))
-    print(f"{'Summary':^40}")
-    print(f"{'-' * 40}")
-    print(f"{finished_line}\n")
-    
-    # Separate waiting, turnaround, and response information
-    print(f"{'Performance Metrics':^40}")
-    print(f"{'-' * 40}")
-    performance_lines = [line for line in lines if any(word in line for word in ["wait", "turnaround", "response"])]
-    for metric in performance_lines:
-        print(f"{metric}")
+from output import SchedulerOutput
 
-    print(f"{'=' * 40}")
+def print_scheduler_output(output: SchedulerOutput):
+    print("=" * 40)
+    print(f"{'Scheduling Report':^40}")
+    print("=" * 40)
+    print(f"Processes: {output.process_count}")
+    print(f"Scheduling Method: {output.algorithm}")
+    
+    if output.quantum:
+        print(f"Quantum: {output.quantum}")
+    
+    print("\n" + "=" * 40)
+    print(f"{'Event Log':^40}")
+    print("=" * 40)
+    
+    # Printing events by time tick
+    for time_tick in sorted(output.events.keys()):
+        events = output.events[time_tick]
+        for event in events:
+            print(f"Time {time_tick:<2}: {event}")
+    
+    print("=" * 40)
+    
+    # Printing incomplete processes, if any
+    if output.incomplete_processes:
+        print(f"{'Incomplete Processes':^40}")
+        print("=" * 40)
+        for process in output.incomplete_processes:
+            print(f"{process}")
+        print("=" * 40)
+    
+    # Printing last time tick
+    if output.last_time_tick is not None:
+        print(f"Finished at time {output.last_time_tick}\n")
+    
+    print(f"{'Performance Metrics':^40}")
+    print("=" * 40)
+    
+    # Printing process statistics
+    for process, stats in output.process_stats.items():
+        print(f"Process {process}:")
+        print(f"  Wait: {stats['wait']}  Turnaround: {stats['turnaround']}  Response: {stats['response']}")
+    
+    print("=" * 40)

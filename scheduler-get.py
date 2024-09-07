@@ -3,7 +3,8 @@ import os
 import sys
 from input import parse_scheduler_file
 from output import SchedulerOutput
-from rendering import print_formatted_output
+from rendering import print_scheduler_output
+from lottery import lottery_scheduler
 
 def get_file_from_command_line() -> str:
     # Create an ArgumentParser object
@@ -53,18 +54,9 @@ file = get_file_from_command_line()
 
 scheduler = parse_scheduler_file(file)
 
-output = SchedulerOutput(len(scheduler.processes), scheduler.use, scheduler.quantum)
-output.add_event(0, "A arrived")
-output.add_event(2, "B arrived")
-output.add_event(3, "A finished")
-output.add_process_stats("A", 1, 13, 1)
-output.add_process_stats("B", 23, 2, 8)
-output.set_last_time_tick(20)
+output = lottery_scheduler(scheduler)
 
 destination = remove_file_extension(file) + ".out"
 write_scheduler_output_to_file(output, destination)
 
-with open(destination, "r") as file:
-    fileContents = file.read()
-
-print_formatted_output(fileContents)
+print_scheduler_output(output)

@@ -24,7 +24,7 @@ def round_robin_scheduler(scheduler: Scheduler) -> SchedulerOutput:
         for p in processes:
             if p.arrival <= time and p.name not in completed_processes and p not in ready_queue:
                 if exclude_process is None or p.name != exclude_process.name:
-                    output.add_event(time, f"{p.name} arrived")
+                    output.add_event(p.arrival, f"{p.name} arrived")
                     ready_queue.append(p)
 
     # Keep running until all processes are completed or time exceeds runfor

@@ -24,17 +24,18 @@ def round_robin_scheduler(scheduler: Scheduler) -> SchedulerOutput:
         for p in processes:
             if p.arrival <= time and p.name not in completed_processes and p not in ready_queue:
                 if exclude_process is None or p.name != exclude_process.name:
+                    output.add_event(time, f"{p.name} arrived")
                     ready_queue.append(p)
 
     # Keep running until all processes are completed or time exceeds runfor
-    while not all_processes_completed() and time < scheduler.runfor:
+    while time < scheduler.runfor:
         add_arrived_processes()
-        print(time, ready_queue)
 
         if ready_queue:
             # Get the next process in the queue
             current_process = ready_queue.popleft()
-            print(process_dict)
+            output.add_event(time, f"{current_process.name} selected (burst {process_dict[current_process.name]['remaining_time']})")
+            
 
             # Record response time if it's the first time the process is running
             if not process_dict[current_process.name]['response_recorded']:
@@ -44,8 +45,8 @@ def round_robin_scheduler(scheduler: Scheduler) -> SchedulerOutput:
             # Run the process for the quantum or until completion
             execution_time = min(scheduler.quantum, process_dict[current_process.name]['remaining_time'])
             process_dict[current_process.name]['remaining_time'] -= execution_time
-            for t in range(time, time + execution_time):
-                output.add_event(t, f"{current_process.name} running")
+            # for t in range(time, time + execution_time):
+            #     output.add_event(t, f"{current_process.name} running")
 
             time += execution_time
 

@@ -5,6 +5,7 @@ from input import parse_scheduler_file
 from output import SchedulerOutput
 from rendering import print_scheduler_output
 from lottery import lottery_scheduler
+from roundrobin import round_robin_scheduler
 
 def get_file_from_command_line() -> str:
     # Create an ArgumentParser object
@@ -54,7 +55,7 @@ file = get_file_from_command_line()
 
 scheduler = parse_scheduler_file(file)
 
-output = lottery_scheduler(scheduler)
+output = round_robin_scheduler(scheduler)
 
 destination = remove_file_extension(file) + ".out"
 write_scheduler_output_to_file(output, destination)

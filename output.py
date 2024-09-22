@@ -57,8 +57,8 @@ class SchedulerOutput:
         if self.last_time_tick is not None:
             print(f"Finished at time {self.last_time_tick:3}\n")
 
-        # Print process statistics
-        for process_name, stats in self.process_stats.items():
+        # Print process statistics, now sorted
+        for process_name, stats in sorted(self.process_stats.items(), key=lambda a: a[0]):
             print(f"{process_name} wait {stats['wait']:3} turnaround {stats['turnaround']:3} response {stats['response']}")
 
     def __repr__(self):

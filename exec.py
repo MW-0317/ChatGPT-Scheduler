@@ -6,6 +6,7 @@ from output import SchedulerOutput
 from rendering import print_scheduler_output
 from lottery import lottery_scheduler
 from roundrobin import round_robin_scheduler
+from FCFS import fcfs_scheduler
 
 def get_file_from_command_line() -> str:
     # Create an ArgumentParser object
@@ -55,9 +56,18 @@ file = get_file_from_command_line()
 
 scheduler = parse_scheduler_file(file)
 
-output = round_robin_scheduler(scheduler)
+match scheduler.use:
+    case 'fcfs':
+        output = fcfs_scheduler(scheduler)
+    case 'rr':
+        output = round_robin_scheduler(scheduler)
+    case 'lottery':
+        output = lottery_scheduler(scheduler)
+    case _:
+        print("Unknown algorithm!")
+        exit(1)
 
-destination = remove_file_extension(file) + ".out"
+destination = remove_file_extension(file) + ".out.test"
 write_scheduler_output_to_file(output, destination)
 
 print_scheduler_output(output)

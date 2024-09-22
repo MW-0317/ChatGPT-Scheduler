@@ -33,9 +33,9 @@ class SchedulerOutput:
         """Print the scheduler output in the required format."""
         # Print the number of processes and algorithm used
         print(f"{self.process_count} processes")
-        algo_description = "round robin" if self.algorithm == 'rr' else "shortest job first"
+        algo_description = "round-robin" if self.algorithm == 'rr' else "shortest job first"
         algo_description = algo_description if "sjf" in self.algorithm else algo_description
-        algo_description = "first come first serve" if self.algorithm == "fcfs" else algo_description
+        algo_description = "first-come first-serve" if self.algorithm == "fcfs" else algo_description
         algo_description = "lottery" if self.algorithm == "lottery" else algo_description
         print(f"Using {algo_description.title()}")
 

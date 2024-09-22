@@ -40,8 +40,8 @@ class Scheduler:
         self.end = end
 
         # Validation for the algorithm type and quantum requirement
-        if self.use not in ['fcfs', 'sjf', 'rr', 'lottery']:
-            raise ValueError("Invalid algorithm specified. Valid values: 'fcfs', 'sjf', 'rr', 'lottery'")
+        if self.use not in ['fcfs', 'sjf', 'rr', 'lottery', 'ljf']:
+            raise ValueError("Invalid algorithm specified. Valid values: 'fcfs', 'sjf', 'rr', 'lottery', 'ljf'")
 
         if self.use == 'rr' and self.quantum is None:
             raise ValueError("Error: Missing quantum parameter when use is 'rr'")

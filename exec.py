@@ -7,6 +7,7 @@ from rendering import print_scheduler_output
 from lottery import lottery_scheduler
 from roundrobin import round_robin_scheduler
 from FCFS import fcfs_scheduler
+from LJF import ljf_scheduler
 
 def get_file_from_command_line() -> str:
     # Create an ArgumentParser object
@@ -63,6 +64,8 @@ match scheduler.use:
         output = round_robin_scheduler(scheduler)
     case 'lottery':
         output = lottery_scheduler(scheduler)
+    case 'ljf':
+        output = ljf_scheduler(scheduler)
     case _:
         print("Unknown algorithm!")
         exit(1)

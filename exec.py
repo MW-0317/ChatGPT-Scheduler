@@ -8,6 +8,7 @@ from lottery import lottery_scheduler
 from roundrobin import round_robin_scheduler
 from FCFS import fcfs_scheduler
 from LJF import ljf_scheduler
+from SJF import sjf_scheduler
 
 def get_file_from_command_line() -> str:
     # Create an ArgumentParser object
@@ -58,6 +59,8 @@ file = get_file_from_command_line()
 scheduler = parse_scheduler_file(file)
 
 match scheduler.use:
+    case 'sjf':
+        output = sjf_scheduler(scheduler)
     case 'fcfs':
         output = fcfs_scheduler(scheduler)
     case 'rr':

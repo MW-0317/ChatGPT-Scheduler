@@ -12,7 +12,10 @@ class Process:
         self.name = name
         self.arrival = arrival
         self.burst = burst
-
+        self.remaining_time = burst  # Initialize remaining time as the total burst time
+        self.start_time = None       # Track start time for response calculation
+        self.response_time = None    # Response time
+        
     def __repr__(self):
         """
         Provide a string representation of the Process for easy debugging and display.

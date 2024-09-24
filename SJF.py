@@ -8,6 +8,7 @@ def sjf_scheduler(scheduler: Scheduler) -> SchedulerOutput:
     index = 0
     processes = sorted(scheduler.processes, key=lambda p: p.arrival)
 
+    finished = False
     while current_time < scheduler.runfor:
         while index < len(processes) and processes[index].arrival <= current_time:
             process = processes[index]
@@ -19,10 +20,14 @@ def sjf_scheduler(scheduler: Scheduler) -> SchedulerOutput:
 
         if ready_queue:
             process = ready_queue[0]
-            if process.start_time is None:
-                process.start_time = current_time
-                process.response_time = current_time - process.arrival
+            if (process.start_time is None) or finished:
+                if process.start_time is None:
+                    process.start_time = current_time
+                    process.response_time = current_time - process.arrival
                 output.add_event(current_time, f"{process.name} selected (burst {process.remaining_time})")
+            
+            if finished:
+                finished = False
 
             process.remaining_time -= 1
             current_time += 1
@@ -33,6 +38,7 @@ def sjf_scheduler(scheduler: Scheduler) -> SchedulerOutput:
                 output.add_process_stats(process.name, wait=waiting_time, turnaround=turnaround_time, response=process.response_time)
                 output.add_event(current_time, f"{process.name} finished")
                 ready_queue.pop(0)
+                finished = True
         else:
             output.add_event(current_time, "Idle")
             current_time += 1

@@ -39,7 +39,7 @@ class SchedulerOutput:
             case 'sjf':
                 algo_description = 'shortest job first'
             case 'fcfs':
-                algo_description = 'first-come first-serve'
+                algo_description = 'first-come first-served'
             case 'lottery':
                 algo_description = 'lottery'
             case 'ljf':
@@ -48,7 +48,13 @@ class SchedulerOutput:
                 print(f"Unknown algorithm {self.algorithm}!")
                 exit(1)
 
-        print(f"Using {algo_description.title()}")
+        match self.algorithm:
+            case 'sjf':
+                is_preemptive = "preemptive "
+            case _:
+                is_preemptive = ""
+
+        print(f"Using {is_preemptive}{algo_description.title()}")
 
         # Print quantum if the algorithm is round robin
         if self.algorithm == 'rr':
@@ -56,7 +62,7 @@ class SchedulerOutput:
 
         # Print events in order
         for time_tick in sorted(self.events.keys()):
-            for event in self.events[time_tick]:
+            for event in sorted(self.events[time_tick], key = lambda event: 'arrived' in event, reverse = True):
                 print(f"Time {time_tick:3} : {event}")
 
         # Print idle times if any
